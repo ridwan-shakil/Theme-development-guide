@@ -10,6 +10,10 @@ require_once get_template_directory() . '/inc/demo-import.php';
 // ACF demo data import
 require_once get_template_directory() . '/inc/halim-acf-data.php';
 
+
+// =======================================
+// Theme setup , Theme support
+// =======================================
 function  halim_setup_theme()
 {
     load_theme_textdomain('halim', get_template_directory_uri() . '/languages');
@@ -23,6 +27,7 @@ function  halim_setup_theme()
     ));
 }
 add_action('after_setup_theme', 'halim_setup_theme');
+
 // acf css on header 
 function rs_add_acf_css()
 {
@@ -49,9 +54,9 @@ function halim_scripts()
     wp_enqueue_style('carosel', get_template_directory_uri() . '/assets/css/owl.carousel.css', array());
     wp_enqueue_style('style', get_template_directory_uri() . '/assets/css/style.css', array(), '1.0');
     wp_enqueue_style('responsive', get_template_directory_uri() . '/assets/css/responsive.css', array());
-    // javascripts 
-
-
+   
+	
+	// javascripts 
     wp_enqueue_script('jquery', get_template_directory_uri() . '/assets/js/jquery.min.js', array('jquery'), '1.12.4', true);
     wp_enqueue_script('popper', get_template_directory_uri() . '/assets/js/popper.min.js', array('jquery'), '', true);
     wp_enqueue_script('bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '4.1.0', true);
@@ -67,9 +72,9 @@ add_action('wp_enqueue_scripts', 'halim_scripts');
 
 
 
-/**
- * Filter the excerpt length to 30 words.
- */
+// =======================================
+// Filter the excerpt length to 30 words.
+// =======================================
 function wp_example_excerpt_length($length)
 {
     return 30;
@@ -162,16 +167,7 @@ function halim_theme_slug_widgets_init()
         'before_title'  => '<h4>',
         'after_title'   => '</h4>',
     ));
-    //   sidebar 4 
-    // register_sidebar(array(
-    //     'name'          => __('Footer 4', 'textdomain'),
-    //     'id'            => 'footer-4',
-    //     'description'   => __('Widgets in this area will be shown on footer right side.', 'textdomain'),
-    //     'before_widget' => '<div class="single-footer contact-box">',
-    //     'after_widget'  => '</div>',
-    //     'before_title'  => '<h4>',
-    //     'after_title'   => '</h4>',
-    // ));
+  
 }
 add_action('widgets_init', 'halim_theme_slug_widgets_init');
 
@@ -191,6 +187,7 @@ function move_comment_field($fields)
     return $fields;
 }
 add_filter('comment_form_fields', 'move_comment_field');
+
 
 
 // Change default fields, add "placeholder" and change type attributes.
@@ -231,6 +228,8 @@ function Halim_comment_placeholders($fields)
 }
 add_filter('comment_form_default_fields', 'Halim_comment_placeholders');
 
+
+
 //  add placeholder text to comment field
 function placeholder_comment_form_field($fields)
 {
@@ -245,9 +244,10 @@ add_filter('comment_form_defaults', 'placeholder_comment_form_field', 20);
 
 
 
+
+// =======================================
 // acf-json  saves acf data into folder , speeds up ACF and allows for version control
-
-
+// =======================================
 function my_acf_json_save_point($path)
 {
 
