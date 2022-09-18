@@ -1,0 +1,31 @@
+
+=============================
+Register menu ( functions )
+=============================
+  register_nav_menus(array(
+        'main-menu' => __('Main Menu', 'stack'),
+
+    ));
+=============================
+Display menu ( frontend )
+=============================
+
+ <?php if (has_nav_menu('main-menu')) {
+                    wp_nav_menu(array(
+                        'theme_location' => 'main-menu',
+                        'menu_class'    => 'navbar-nav ml-aut',
+                        'container' => 'false'
+                    ));
+                }   ?>
+
+=============================
+Design part ( css )
+=============================
+
+div#ul-parrent {
+    justify-content: end;
+} 
+/* active  */
+.navbar-nav > li.current-menu-item > a {
+    color: rgb(129, 255, 148);
+}
