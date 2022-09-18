@@ -1,0 +1,13 @@
+ACF free version does't have =   Gallery , Repeter , Options page
+
+ACF options page data can't be exporte.
+
+Download "ACF font " plugin for Icons.
+enqueue fontawesome latest version ( not cdn , open minified version copy and use ).
+enqued version and plugins fontawesome should be same .
+
+
+ACF options page = https://cutt.ly/iVoB4mS
+
+
+acf extension is available on VS code so just type 'field' and show data on frontend.
