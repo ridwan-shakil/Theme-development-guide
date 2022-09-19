@@ -11,3 +11,6 @@ ACF options page = https://cutt.ly/iVoB4mS
 * get_field('site_logo', 'options'); show options page data like this.
 
 acf extension is available on VS code so just type 'field' and show data on frontend.
+
+
+Don't use Repeater instide of Group . ***
