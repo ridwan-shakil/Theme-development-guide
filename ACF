@@ -14,3 +14,10 @@ acf extension is available on VS code so just type 'field' and show data on fron
 
 
 Don't use Repeater instide of Group . ***
+
+
+
+Get category from ACF texonomy field
+
+    $catid = get_field('blogcat', 'options'));
+   $catname = get_cat_name($catid); ***
