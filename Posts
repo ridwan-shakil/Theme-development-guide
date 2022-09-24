@@ -1,0 +1,5 @@
+the_post_thumbnail_url('large');    
+
+get_the_tags(); 
+
+get_cat_name($catid); 
