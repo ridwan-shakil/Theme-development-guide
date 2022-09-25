@@ -190,7 +190,7 @@ add_filter('comment_form_fields', 'move_comment_field');
 
 
 
-// Change default fields, add "placeholder" and change type attributes.
+// Change default fields, add "placeholder" and change type attributes.===========
 function Halim_comment_placeholders($fields)
 {
     $fields['author'] = str_replace(
@@ -230,7 +230,7 @@ add_filter('comment_form_default_fields', 'Halim_comment_placeholders');
 
 
 
-//  add placeholder text to comment field
+//  add placeholder text to comment field===================
 function placeholder_comment_form_field($fields)
 {
     $replace_comment = __('Your Comment', 'halim');
@@ -241,6 +241,20 @@ function placeholder_comment_form_field($fields)
     return $fields;
 }
 add_filter('comment_form_defaults', 'placeholder_comment_form_field', 20);
+
+
+// remove any feild from comment form ======================
+function unset_url_field($fields)
+{
+    if (isset($fields['url']))
+        unset($fields['url']);
+    return $fields;
+}
+add_filter('comment_form_default_fields', 'unset_url_field');
+
+
+
+
 
 
 
