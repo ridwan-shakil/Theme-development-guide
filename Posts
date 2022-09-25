@@ -3,3 +3,27 @@ the_post_thumbnail_url('large');
 get_the_tags(); 
 
 get_cat_name($catid); 
+
+=============================
+get categories 
+=============================
+  $categories = get_categories(array(
+         'orderby' => 'name',
+         'order'   => 'ASC'
+      ));
+      foreach ($categories as $category) {
+         echo $category->name . '<br> ';
+      }
+
+
+
+// Getting all the terms of a texonomy 
+ $cats = get_terms('portfolio-cat');
+ 
+// Getting terms full array of a post
+get_the_terms( $post->ID, 'taxonomy' );
+
+// Getting all terms name of a post ( separate with comma )
+the_category(' , ')
+
+
