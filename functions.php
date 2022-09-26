@@ -310,4 +310,17 @@ add_action('show_user_profile', 'custom_user_profile_fields');
 add_action('edit_user_profile', 'custom_user_profile_fields');
 
 
+// ======================================
+//add Shortcode 
+// ======================================
 
+function wpdocs_footag_func()
+{
+    $content = 'this is coming from shortcode';
+    return $content;
+}
+add_shortcode('rsshort', 'wpdocs_footag_func');
+
+
+// Use shortcode in a PHP file (outside the post editor).
+echo do_shortcode( '[gallery]' );
