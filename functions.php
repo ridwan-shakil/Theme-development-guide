@@ -274,3 +274,40 @@ function my_acf_json_save_point($path)
 }
 
 add_filter('acf/settings/save_json', 'my_acf_json_save_point');
+
+
+// ========================================
+// Add extra field into user meta 
+//  ========================================
+
+function custom_user_profile_fields($profileuser)
+{
+?>
+    <h1>Extra user information</h1>
+    <table class="form-table">
+        <tr>
+            <th>
+                <label for="user_location"><?php _e('Location'); ?></label>
+            </th>
+            <td>
+                <input type="text" name="user_location" id="user_location" value="<?php echo esc_attr(get_the_author_meta('user_location', $profileuser->ID)); ?>" class="regular-text" />
+                <br><span class="description"><?php _e('Your location.', 'text-domain'); ?></span>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <label for="user_facebook"><?php _e('Facebook'); ?></label>
+            </th>
+            <td>
+                <input type="url" name="user_facebook" id="user_facebook" value="<?php echo esc_attr(get_the_author_meta('user_facebook', $profileuser->ID)); ?>" class="regular-text" />
+                <br><span class="description"><?php _e('Your Facebook id link ( e.g https://facebook.com/ridwansakil )', 'text-domain'); ?></span>
+            </td>
+        </tr>
+    </table>
+<?php
+}
+add_action('show_user_profile', 'custom_user_profile_fields');
+add_action('edit_user_profile', 'custom_user_profile_fields');
+
+
+
