@@ -28,3 +28,26 @@ Don't use Repeater instide of Group . ***
 
     $catid = get_field('blogcat', 'options'));
    $catname = get_cat_name($catid); ***
+   
+   
+===============================================
+Rpeter inside Repeter 
+===============================================
+
+			 <?php
+                           // check for rows (sub repeater)
+                           if (have_rows('featurs')) : ?>
+
+                              <?php
+                              // loop through rows (sub repeater)
+                              while (have_rows('featurs')) : the_row(); ?>
+
+                                 <li><span class="fa fa-check mr-2"></span><?php the_sub_field('featur'); ?></li>
+
+                              <?php endwhile; ?>
+
+                           <?php endif; //if( get_sub_field('items') ): 
+                           ?>
+			   
+			   
+			   
