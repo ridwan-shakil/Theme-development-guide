@@ -1,3 +1,4 @@
+<?php
 the_post_thumbnail_url('large');    
 
 get_the_tags(); 
@@ -25,6 +26,24 @@ get_the_terms( $post->ID, 'taxonomy' );
 
 // Getting all terms name of a post ( separate with comma )
 the_category(' , ')
+
+
+=============================
+Tags
+=============================
+
+ <?php echo get_the_tag_list(); ?> 
+                  
+ <?php $post_tags = get_the_tags();
+                  if ($post_tags) :
+                     foreach ($post_tags as $tag) :  ?>
+                        <a href="<?php the_permalink() ?>" class="tag-cloud-link"><?php echo $tag->name; ?></a>
+                  <?php endforeach;
+                  endif; ?>
+
+
+
+
 
 
 =============================
