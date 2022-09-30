@@ -5,9 +5,9 @@ get_the_tags();
 
 get_cat_name($catid); 
 
-=============================
-get categories 
-=============================
+// =============================
+// get categories 
+// =============================
   $categories = get_categories(array(
          'orderby' => 'name',
          'order'   => 'ASC'
@@ -28,12 +28,13 @@ get_the_terms( $post->ID, 'taxonomy' );
 the_category(' , ')
 
 
-=============================
-Tags
-=============================
+// =============================
+// Tags
+// =============================
 
  <?php echo get_the_tag_list(); ?> 
-                  
+      
+
  <?php $post_tags = get_the_tags();
                   if ($post_tags) :
                      foreach ($post_tags as $tag) :  ?>
@@ -47,9 +48,9 @@ Tags
 
 
 =============================
- <!-- Related posts  -->
+ Related posts 
 =============================
-            <?php
+           <?php
             $orig_post = $post;
             global $post;
             $tags = wp_get_post_tags($post->ID);
