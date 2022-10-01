@@ -242,6 +242,16 @@ function placeholder_comment_form_field($fields)
 }
 add_filter('comment_form_defaults', 'placeholder_comment_form_field', 20);
 
+// Change comment form title =============================
+function mycustom_comment_form_title_reply($defaults)
+{
+    $defaults['title_reply'] = __('Leave a comment');
+    return $defaults;
+}
+add_filter('comment_form_defaults', 'mycustom_comment_form_title_reply');
+
+
+
 
 // remove any feild from comment form ======================
 function unset_url_field($fields)
