@@ -42,7 +42,23 @@ the_category(' , ')
                   <?php endforeach;
                   endif; ?>
 
+// =============================
+// post author box
+// =============================
+            <div class="about-author d-flex p-4 bg-light">
+               <?php
+               global $post;
+               $author_id = $post->post_author;
+               ?>
+               <div class="bio mr-5">
+                  <?php echo get_avatar(get_the_author_meta('ID'), 120); ?> <!-- 120 is image size -->
+               </div>
+               <div class="desc">
 
+                  <h3><?php echo get_the_author_meta('display_name', $author_id); ?></h3>
+                  <p><?php echo get_the_author_meta('description', $author_id); ?></p>
+               </div>
+            </div>
 
 
 
