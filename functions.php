@@ -252,7 +252,8 @@ function unset_url_field($fields)
 }
 add_filter('comment_form_default_fields', 'unset_url_field');
 
-
+// Custom comments list html markup ======================
+https://cutt.ly/uVNYYOp
 
 
 
