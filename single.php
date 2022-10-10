@@ -34,13 +34,26 @@ the_category(' , ')
 
  <?php echo get_the_tag_list(); ?> 
       
-
+<!-- Get a post tags  -->
  <?php $post_tags = get_the_tags();
                   if ($post_tags) :
                      foreach ($post_tags as $tag) :  ?>
                         <a href="<?php the_permalink() ?>" class="tag-cloud-link"><?php echo $tag->name; ?></a>
                   <?php endforeach;
                   endif; ?>
+
+
+<!-- Get all tags  -->
+   <div class="tagcloud">
+
+            <?php
+            $tags = get_tags();
+            foreach ($tags as $tag) { ?>
+                <a href="<?php echo get_tag_link($tag->term_id) ?>" class="tag-cloud-link"><?php echo $tag->name ?></a>
+            <?php
+            } ?>
+
+        </div>
 
 // =============================
 // post author box
