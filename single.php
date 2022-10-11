@@ -1,3 +1,24 @@
+<!-- breadcrumbs  different tittle por different pages -->
+<?php
+if (is_front_page()) {
+    $title = "Home";
+} else if (is_single()) { // POST, not needed for this site
+    $title = " ";
+} else if (is_home()) { //Blog page
+    $title = "Blog";
+} else if (is_page()) { // PAGE
+    $title = get_the_title();
+} else if (is_category()) {
+    $arr = get_the_category();
+    if (!empty($arr)) {
+        $title = esc_html($arr[0]->name);
+    }
+} ?>
+
+
+
+
+
 <?php
 the_post_thumbnail_url('large');    
 
