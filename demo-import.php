@@ -1,3 +1,6 @@
+<!-- One Click Demo Import  plugin have to be installed to import demo data and auto set front page , menu location  -->
+
+
 <?php
 function ocdi_import_files()
 {
@@ -23,6 +26,8 @@ function ocdi_import_files()
 }
 add_filter('ocdi/import_files', 'ocdi_import_files');
 
+
+//=================== automatically assign "Front page", "Posts page" and menu locations after the importer is done ===================
 function ocdi_after_import_setup()
 {
     // Assign menus to their locations.
