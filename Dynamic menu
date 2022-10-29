@@ -29,3 +29,9 @@ div#ul-parrent {
 .navbar-nav > li.current-menu-item > a {
     color: rgb(129, 255, 148);
 }
+
+******************************************************
+                  Dropdown menu 
+*****************************************************
+replace the ( .dropdown ) class with ( menu-item-has-children ) class in assets/style.css file
+replace the ( submenu ) class with ( sub-menu ) class in assets/mainjs file
