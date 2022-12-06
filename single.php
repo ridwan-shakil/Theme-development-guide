@@ -16,11 +16,21 @@ if (is_front_page()) {
 } ?>
 
 
-
-
-
 <?php
-the_post_thumbnail_url('large');    
+// =============================
+// Common codes
+// =============================
+
+echo get_the_date(); // the_date doesn't work outside loop .
+
+the_post_thumbnail_url('large');   
+
+the_post_thumbnail('large', array('alt' => get_the_title()));
+
+<?php 
+    global $post;
+    $author_id = $post->post_author;
+echo get_the_author_meta('display_name', $author_id);   // The_author() doesn't work outside wp_query loop.
 
 get_the_tags(); 
 
@@ -79,22 +89,35 @@ the_category(' , ')
 // =============================
 // post author box
 // =============================
-            <div class="about-author d-flex p-4 bg-light">
-               <?php
+
+               <?php  // this code is mendatory to gate any author info
                global $post;
                $author_id = $post->post_author;
                ?>
-               <div class="bio mr-5">
+       
                   <?php echo get_avatar(get_the_author_meta('ID'), 120); ?> <!-- 120 is image size -->
-               </div>
-               <div class="desc">
 
                   <h3><?php echo get_the_author_meta('display_name', $author_id); ?></h3>
                   <p><?php echo get_the_author_meta('description', $author_id); ?></p>
-               </div>
-            </div>
+           
 
+// Add social links on author meta box ======================
 
+<?php   // add this code on function.php page
+add_filter('user_contactmethods', 'wpse_user_contactmethods', 10, 1);
+function wpse_user_contactmethods($contact_methods)
+{
+	$contact_methods['facebook'] = __('Facebook URL', 'text_domain');
+	$contact_methods['twitter']  = __('Twitter URL', 'text_domain');
+	$contact_methods['linkedin'] = __('LinkedIn URL', 'text_domain');
+	$contact_methods['instagram']  = __('Instagram URL', 'text_domain');
+	$contact_methods['vimeo']  = __('Vimeo URL', 'text_domain');
+
+	return $contact_methods;
+}
+
+// add this code where you want to gate the social link
+<?php echo get_the_author_meta('facebook', $author_id); ?>
 
 
 =============================
