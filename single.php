@@ -120,9 +120,9 @@ function wpse_user_contactmethods($contact_methods)
 <?php echo get_the_author_meta('facebook', $author_id); ?>
 
 
-=============================
- Related posts 
-=============================
+//=============================
+// Related posts  ( related by same tags )
+//=============================
            <?php
             $orig_post = $post;
             global $post;
@@ -163,4 +163,29 @@ function wpse_user_contactmethods($contact_methods)
             $post = $orig_post;
 
             wp_reset_query(); ?>
+
+//=============================
+// Related posts  ( manually selected ) 
+//=============================
+// With ACF
+
+//create a field name ***| field type 'relationship' 
+
+			// Show related posts 
+			<?php
+                            $related_posts = get_field('');
+                          
+                             foreach ($related_posts as $post) : ?>
+
+                                 <?php echo $post->post_title; ?></a></h6>
+                                     
+                       <?php endforeach; ?>
+
+
+
+
+
+
+
+
 
