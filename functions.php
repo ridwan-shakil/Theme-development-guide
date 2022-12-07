@@ -286,6 +286,25 @@ function my_acf_json_save_point($path)
 
 add_filter('acf/settings/save_json', 'my_acf_json_save_point');
 
+// ========================================
+// Add social links on author meta box ======================
+// ========================================
+
+<?php   // add this code on function.php page
+add_filter('user_contactmethods', 'wpse_user_contactmethods', 10, 1);
+function wpse_user_contactmethods($contact_methods)
+{
+	$contact_methods['facebook'] = __('Facebook URL', 'text_domain');
+	$contact_methods['twitter']  = __('Twitter URL', 'text_domain');
+	$contact_methods['linkedin'] = __('LinkedIn URL', 'text_domain');
+	$contact_methods['instagram']  = __('Instagram URL', 'text_domain');
+	$contact_methods['vimeo']  = __('Vimeo URL', 'text_domain');
+
+	return $contact_methods;
+}
+
+// add this code where you want to gate the social link
+<?php echo get_the_author_meta('facebook', $author_id); ?>
 
 // ========================================
 // Add extra field into user meta 
