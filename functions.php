@@ -67,6 +67,9 @@ function halim_scripts()
     wp_enqueue_script('counterup', get_template_directory_uri() . '/assets/js/jquery.counterup.min.js', array('jquery'), '1.0', true);
     wp_enqueue_script('waypoint', get_template_directory_uri() . '/assets/js/waypoint.min.js', array('jquery'), '4.0.0', true);
     wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.js', array(), '', true);
+	
+	// IF page is not loading correctly :
+	//	view page source > click on every link > see every page is linked properly or not 
 }
 add_action('wp_enqueue_scripts', 'halim_scripts');
 
