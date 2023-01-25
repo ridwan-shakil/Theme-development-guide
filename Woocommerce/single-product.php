@@ -57,7 +57,7 @@ function ts_quantity_plus_minus()
 <?php
 }
 
-// --------------------------------------
+// ------------------ css of add to cart button part --------------------
 /* hide input arrow key  */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -70,3 +70,52 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+
+.single-product div.product form.cart .quantity {
+    float: none;
+    margin: 0;
+    display: inline-block;
+    }
+form.cart {
+    display: flex;
+}
+
+.minus,.plus,.quantity {
+    border: none;
+    /* background-color: #f5f5f5; */
+    padding: 5px 5px;
+    background: #f5f5f5;
+}
+
+
+button.plus, button.minus  {
+    padding: 16px 15px;
+    background: #f5f5f5 !important;
+    color: #6f6f6f;
+    border: 0px;
+}
+
+input.input-text {
+    padding: 10px 5px;
+    background: #f5f5f5 !important;
+    color: #6f6f6f;
+    border: 0px;
+}
+
+button.single_add_to_cart_button.button.alt.wp-element-button {
+    padding: 16px 35px;
+    margin-left: 6px;
+    margin-bottom: 5px;
+    background: green;
+    display: inline-block;
+    font-size: 14px;
+    padding: 10px 28px 10px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #7fad39;
+    letter-spacing: 2px;
+}
+
+// ========================================
