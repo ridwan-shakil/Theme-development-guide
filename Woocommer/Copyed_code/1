@@ -1,0 +1,892 @@
+            http://docs.woothemes.com/documentation/plugins/woocommerce/      All documentation is here
+                http://fuyuko.net/woocommerce-cheat-sheet-single-product-page/
+<?php
+http://docs.woothemes.com/document/editing-product-data-tabs/
+
+===================================================================================
+    http://code.tutsplus.com/articles/an-introduction-to-theming-woocommerce-for-wordpress--wp-31577
+    Disabling the Default Stylesheet and Starting From Scratch
+     //code to your themes functions.php
+    
+    define('WOOCOMMERCE_USE_CSS', false);
+==================================================================================== 
+    Declaring WooCommerce Support in Your Theme    
+    //code inserted in to your themes functions.php file:
+	
+    add_action( 'after_setup_theme', 'woocommerce_support' );
+    function woocommerce_support() {
+        add_theme_support( 'woocommerce' );
+    } 
+
+==================================================================================== 
+    Duplicate your themes page.php file and rename it woocommerce.php
+    Find the WordPress loop within your woocommerce.php file. It will look something like:
+
+	
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+<?php the_title(); ?
+<?php the_content(); ?>
+<?php endwhile; endif; ?>
+
+    Replace your loop with the WooCommerce loop: <?php woocommerce_content(); ?>
+    Now, make any further changes you wish to make such as swapping in a different sidebar or changing the layout.
+
+====================================================================================
+ <?php --- php dichi just code heighlight korar jonno -----
+Removing Tabs 
+Use the following snippet to remove specific tabs
+
+add_filter( 'woocommerce_product_tabs', 'woo_remove_product_tabs', 98 );
+function woo_remove_product_tabs( $tabs ) {
+unset( $tabs['description'] ); // Remove the description tab
+unset( $tabs['reviews'] ); // Remove the reviews tab
+unset( $tabs['additional_information'] ); // Remove the additional information tab
+return $tabs;
+} 
+
+
+
+====================================================================================
+Renaming Tabs 
+Use the following snippet to rename tabs.
+
+add_filter( 'woocommerce_product_tabs', 'woo_rename_tabs', 98 );
+function woo_rename_tabs( $tabs ) {
+$tabs['description']['title'] = __( 'More Information' ); // Rename the description tab
+$tabs['reviews']['title'] = __( 'Ratings' ); // Rename the reviews tab
+$tabs['additional_information']['title'] = __( 'Product Data' ); // Rename the additional information tab
+return $tabs;
+} 
+    
+    
+====================================================================================
+Re-ordering Tabs
+Use the following snippet to change the tab order
+    
+add_filter( 'woocommerce_product_tabs', 'woo_reorder_tabs', 98 );
+function woo_reorder_tabs( $tabs ) {
+$tabs['reviews']['priority'] = 5; // Reviews first
+$tabs['description']['priority'] = 10; // Description second
+$tabs['additional_information']['priority'] = 15; // Additional information third
+return $tabs;
+} 
+    
+    
+====================================================================================
+    
+Customise a tab
+The following snippet will replace the description tab with a custom function
+	
+
+add_filter( 'woocommerce_product_tabs', 'woo_custom_description_tab', 98 );
+function woo_custom_description_tab( $tabs ) {
+$tabs['description']['callback'] = 'woo_custom_description_tab_content'; // Custom description callback
+return $tabs;
+}
+function woo_custom_description_tab_content() {
+echo '<h2>Custom Description</h2>';
+echo '<p>Here\'s a custom description</p>';
+}   
+    
+    
+====================================================================================
+    
+Add a custom tab
+Use the following snippet to add a custom global product tab
+	
+
+add_filter( 'woocommerce_product_tabs', 'woo_new_product_tab' );
+function woo_new_product_tab( $tabs ) {
+// Adds the new tab
+$tabs['test_tab'] = array(
+'title' => __( 'New Product Tab', 'woocommerce' ),
+'priority' => 50,
+'callback' => 'woo_new_product_tab_content'
+);
+return $tabs;
+}
+function woo_new_product_tab_content() {
+// The new tab content
+echo '<h2>New Product Tab</h2>';
+echo '<p>Here\'s your new product tab.</p>';
+} 
+    
+====================================================================================
+ The Additional Information tab
+
+Please note that the “Additional Information” tab will only show if the product has weight, dimensions or attributes (not used for variation for variable products). If you try to apply a change to that tab and if the product does not have weight, dimensions or attribute, you will get an error message similar to :
+
+Warning: call_user_func() expects parameter 1 to be a valid callback, no array or string given in /mysite/wp-content/plugins/woocommerce/templates/single-product/tabs/tabs.php on line 35
+
+In that case you have to use WooCommerce conditional tags:
+
+    has_attributes()
+    has_dimensions()
+    has_weight()
+
+add_filter( 'woocommerce_product_tabs', 'woo_rename_tabs', 98 );
+ 
+function woo_rename_tabs( $tabs ) {
+ 
+global $product;
+if( $product->has_attributes() || $product->has_dimensions() || $product->has_weight() ) { // Check if product has attributes, dimensions or weight
+$tabs['additional_information']['title'] = __( 'Product Data' ); // Rename the additional information tab
+}
+return $tabs;
+}    
+    
+    
+    
+====================================================================================
+ http://fuyuko.net/woocommerce-cheat-sheet-product-listing-page/   
+ How To Change Number Products Displayed Per Page
+
+Insert the following code in your theme’s functions.php
+     
+     // Display 40 products per page. 
+add_filter( 'loop_shop_per_page', create_function( '$cols', 'return 40;' ), 20 );
+    
+    
+====================================================================================
+    How To Remove Sorting Option Dropdown Menu
+
+Insert the following code in your theme’s functions.php
+    
+    //remove sorting option drop down in product listing page
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
+    
+    
+    
+====================================================================================
+    
+    How To Remove Prices From Product Listing Page
+
+Insert the following code in your theme’s functions.php
+
+function woo_product_listing_remove_price(){
+// hide product price on category page
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
+}
+
+add_action( 'init', 'woo_product_listing_remove_price' );
+    
+====================================================================================
+    
+    How To Remove Related Products
+
+Add the following code to your theme’s functions.php
+
+//remove related products from single product page
+remove_action ( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+====================================================================================
+    
+    How To Remove Price
+
+Add the following code to your theme’s functions.php
+
+//remove price from single product page
+remove_action ( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
+====================================================================================
+    
+    How To Remove “Production Description” Heading in Description Tab
+
+/** 
+ * remove "Production Description" heading under description tab in 
+ * single product page
+ */
+add_filter('woocommerce_product_description_heading',
+'woo_product_description_heading');
+ 
+function woo_product_description_heading() {
+    return '';
+}
+====================================================================================
+    http://fuyuko.net/woocommerce-cheat-sheet-single-product-page/
+    Remove Price from Notification Email Messages
+    Add this code to your theme’s functions.php. This will insert a div tag before each thumbnail image.
+
+Modify the CSS (assuming you are tweaking the default WooCommerce stylesheet) to:
+
+    get rid of the box shadow on the image tag
+    make the image’s width = auto
+    make the image’s margin = auto
+    give the imagewrapper fixed width and height
+    add boxshadow to the imagewrapper (if you want the same shadow look)
+
+    
+    <?php
+/* This snippet removes the action that inserts thumbnails to products in teh loop
+* and re-adds the function customized with our wrapper in it.
+* It applies to all archives with products.
+*
+* @original plugin: WooCommerce
+* @author of snippet: Brian Krogsard
+*/
+remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+/**
+* WooCommerce Loop Product Thumbs
+**/
+if ( ! function_exists( 'woocommerce_template_loop_product_thumbnail' ) ) {
+function woocommerce_template_loop_product_thumbnail() {
+echo woocommerce_get_product_thumbnail();
+}
+}
+/**
+* WooCommerce Product Thumbnail
+**/
+if ( ! function_exists( 'woocommerce_get_product_thumbnail' ) ) {
+function woocommerce_get_product_thumbnail( $size = 'shop_catalog', $placeholder_width = 0, $placeholder_height = 0 ) {
+global $post, $woocommerce;
+if ( ! $placeholder_width )
+$placeholder_width = $woocommerce->get_image_size( 'shop_catalog_image_width' );
+if ( ! $placeholder_height )
+$placeholder_height = $woocommerce->get_image_size( 'shop_catalog_image_height' );
+$output = '<div class="imagewrapper">';
+if ( has_post_thumbnail() ) {
+$output .= get_the_post_thumbnail( $post->ID, $size );
+} else {
+$output .= '<img src="'. woocommerce_placeholder_img_src() .'" alt="Placeholder" width="' . $placeholder_width . '" height="' . $placeholder_height . '" />';
+}
+$output .= '</div>';
+return $output;
+}
+}
+?>
+
+-----
+Here is an example of the CSS code:
+
+.woocommerce .related ul li.product .thumbnails .imagewrapper{
+width: 150px;
+height: 150px;
+display: block;
+box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3);
+-webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3);
+}
+
+.woocommerce .related ul li.product .thumbnails .imagewrapper img{
+width: auto !important;
+box-shadow: none !important;
+margin: auto;
+}
+
+====================================================================================
+  <?php --- php dichi just code heighlight korar jonno -----   
+    
+    How To List Product Attributes
+
+This will involve overwriting “product-content.php” in WooCommerce template:
+
+    Copy “product-content.php” from /wp-content/plugins/woocommerce/templates/ to  /wp-content/themes/yourthemefolder/woocommerce/  you may have to create “woocommerce” folder within your root of your theme folder if you haven’t already)
+    In product-content.php, add the following code in the location where you want to the attributes to show.  The example is showing just attribute values
+
+//insert product attributes
+if ( $attributes = $product->get_attributes( ) ) :
+foreach($attributes as $attribute){
+?>
+<div class="attribute">
+<?php
+$values = wc_get_product_terms( $product->id, $attribute['name'], array( 'fields' => 'names' ) );
+foreach($values as $value) echo $value . " ";
+?>
+</div>
+<?php
+}
+endif;
+
+If you want to display the attributes closer to how they are shown in single product page, you can check the code by looking at product-attributes.php in /wp-content/plugins/woocommerce/templates/single-product/. The attributes related code starts at line 42.
+====================================================================================
+    
+    Remove Price From Product Listing & Single Product Pages
+
+For Product Listing page and Single Product page, you can remove the price using hooks in your theme’s functions.php:
+
+<?php
+
+/**
+* Check if WooCommerce is active
+**/
+if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+
+//remove price from product listing page
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
+
+//remove price from single product page
+remove_action ( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
+
+//remove related products from single product page
+remove_action ( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+
+}
+
+?>
+====================================================================================
+ <?php --- php dichi just code heighlight korar jonno -----
+Remove Price From Checkout Pages
+
+For the checkout process pages, the easiest thing to do is to overwrite the relevant template pages.
+
+What you wanna do, first, is copy the relevant files from WooCommerce plugin’s template pages to your own theme folder with folder structure intact EXCEPT “templates” (skip the folder)
+
+Files you want to copy  (the root folder for this list is “/wp-content/woocommerce/templates/)
+
+    cart/cart.php
+    checkout/review-order.php
+    checkout/thankyou.php
+    order/order-detail.php
+
+Create a folder called “woocommerce” inside your theme folder and paste the files inside. You want to mimic the subfolders too. So for cart.php, for example, you’ll create “cart” folder inside “woocommerce” folder you just created, then paste cart.php inside “cart” folder.
+
+Once you have done that, go to each file and remove codes associated with price info.
+for cart.php, I removed the following code:
+
+//line 28
+<th class="product-price"><?php _e( 'Price', 'woocommerce' ); ?></th>
+
+//line 30
+<th class="product-subtotal"><?php _e( 'Total', 'woocommerce' ); ?></th>
+
+//line 78-82
+<td class="product-price">
+<?php
+echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key );
+?>
+</td>
+
+//line 101-105
+<td class="product-subtotal">
+<?php
+echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
+?>
+</td>
+
+//line 142-150
+<div class="cart-collaterals">
+<?php do_action( 'woocommerce_cart_collaterals' ); ?>
+<?php woocommerce_cart_totals(); ?>
+<?php woocommerce_shipping_calculator(); ?>
+</div>
+
+for review-order.php, I removed the following codes:
+
+//line 19
+<th class="product-total"><?php _e( 'Total', 'woocommerce' ); ?></th>
+
+//line 22-85 (since none of the data inside were relevant)
+<tfoot>
+
+<tr class="cart-subtotal">
+<th><?php _e( 'Cart Subtotal', 'woocommerce' ); ?></th>
+<td><?php wc_cart_totals_subtotal_html(); ?></td>
+</tr>
+
+<?php foreach ( WC()->cart->get_coupons( 'cart' ) as $code => $coupon ) : ?>
+<tr class="cart-discount coupon-<?php echo esc_attr( $code ); ?>">
+<th><?php wc_cart_totals_coupon_label( $coupon ); ?></th>
+<td><?php wc_cart_totals_coupon_html( $coupon ); ?></td>
+</tr>
+<?php endforeach; ?>
+
+<?php if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) : ?>
+8
+<?php do_action( 'woocommerce_review_order_before_shipping' ); ?>
+
+<?php wc_cart_totals_shipping_html(); ?>
+
+<?php do_action( 'woocommerce_review_order_after_shipping' ); ?>
+
+<?php endif; ?>
+
+<?php foreach ( WC()->cart->get_fees() as $fee ) : ?>
+<tr class="fee">
+<th><?php echo esc_html( $fee->name ); ?></th>
+<td><?php wc_cart_totals_fee_html( $fee ); ?></td>
+</tr>
+<?php endforeach; ?>
+
+<?php if ( WC()->cart->tax_display_cart === 'excl' ) : ?>
+<?php if ( get_option( 'woocommerce_tax_total_display' ) === 'itemized' ) : ?>
+<?php foreach ( WC()->cart->get_tax_totals() as $code => $tax ) : ?>
+<tr class="tax-rate tax-rate-<?php echo sanitize_title( $code ); ?>">
+<th><?php echo esc_html( $tax->label ); ?></th>
+<td><?php echo wp_kses_post( $tax->formatted_amount ); ?></td>
+</tr>
+<?php endforeach; ?>
+<?php else : ?>
+<tr class="tax-total">
+<th><?php echo esc_html( WC()->countries->tax_or_vat() ); ?></th>
+<td><?php echo wc_price( WC()->cart->get_taxes_total() ); ?></td>
+</tr>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php foreach ( WC()->cart->get_coupons( 'order' ) as $code => $coupon ) : ?>
+<tr class="order-discount coupon-<?php echo esc_attr( $code ); ?>">
+<th><?php wc_cart_totals_coupon_label( $coupon ); ?></th>
+<td><?php wc_cart_totals_coupon_html( $coupon ); ?></td>
+</tr>
+<?php endforeach; ?>
+
+<?php do_action( 'woocommerce_review_order_before_order_total' ); ?>
+
+<tr class="order-total">
+<th><?php _e( 'Order Total', 'woocommerce' ); ?></th>
+<td><?php wc_cart_totals_order_total_html(); ?></td>
+</tr>
+
+<?php do_action( 'woocommerce_review_order_after_order_total' ); ?>
+
+</tfoot>
+
+//line 101-103
+<td class="product-total">
+<?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); ?>
+</td>
+
+ for thankyou.php, I removed the following codes:
+
+//line 47-50
+<li class="total">
+<?php _e( 'Total:', 'woocommerce' ); ?>
+<strong><?php echo $order->get_formatted_order_total(); ?></strong>
+</li>
+
+ for order-detail.php, I removed the following code:
+
+//line 21
+<th class="product-total"><?php _e( 'Total', 'woocommerce' ); ?></th>
+
+//line 24-35
+<tfoot>
+<?php
+if ( $totals = $order->get_order_item_totals() ) foreach ( $totals as $total ) :
+?>
+<tr>
+<th scope="row"><?php echo $total['label']; ?></th>
+<td><?php echo $total['value']; ?></td>
+</tr>
+<?php
+endforeach;
+?>
+</tfoot>
+
+//line 73-75
+<td class="product-total">
+<?php echo $order->get_formatted_line_subtotal( $item ); ?>
+</td>
+=============================================================================================
+ <?php --- php dichi just code heighlight korar jonno -----
+http://fuyuko.net/woocommerce-how-to-convert-shopping-cart-to-request-quote-tool/
+Remove Price from Notification Email Messages
+
+In our environment we only enabled New Order and Processing Order, and all other email notifications are disabled in WooCommerce Email Setting.  So I’ll cover the templates that are relevant to the two notifications.
+
+Files  to copy  (the root folder for this list is “/wp-content/woocommerce/templates/)
+
+    emails/admin-new-order.php
+    emails/customer-processing-order.php
+    emails/email-order-items.php
+
+for admin-new-order.php, I removed the following codes:
+
+//line 24
+<th scope="col" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Price', 'woocommerce' ); ?></th>
+
+//line 30-43
+<tfoot>
+<?php
+if ( $totals = $order->get_order_item_totals() ) {
+$i = 0;
+foreach ( $totals as $total ) {
+$i++;
+?><tr>
+<th scope="row" colspan="2" style="text-align:left; border: 1px solid #eee; <?php if ( $i == 1 ) echo 'border-top-width: 4px;'; ?>"><?php echo $total['label']; ?></th>
+<td style="text-align:left; border: 1px solid #eee; <?php if ( $i == 1 ) echo 'border-top-width: 4px;'; ?>"><?php echo $total['value']; ?></td>
+</tr><?php
+}
+}
+?>
+</tfoot>
+
+for customer-processing-order.php, I removed the following codes:
+
+//line 25
+<th scope="col" style="text-align:left; border: 1px solid #eee;"><?php _e( 'Price', 'woocommerce' ); ?></th>
+
+//line 31-44
+<tfoot>
+<?php
+if ( $totals = $order->get_order_item_totals() ) {
+$i = 0;
+foreach ( $totals as $total ) {
+$i++;
+?><tr>
+<th scope="row" colspan="2" style="text-align:left; border: 1px solid #eee; <?php if ( $i == 1 ) echo 'border-top-width: 4px;'; ?>"><?php echo $total['label']; ?></th>
+<td style="text-align:left; border: 1px solid #eee; <?php if ( $i == 1 ) echo 'border-top-width: 4px;'; ?>"><?php echo $total['value']; ?></td>
+</tr><?php
+}
+}
+?>
+</tfoot>
+
+for email-order-items.php, I removed the following codes:
+
+ //line 62
+<td  style="text-align:left; vertical-align:middle; border: 1px solid #eee;"><?php echo $order->get_formatted_line_subtotal( $item ); ?></td>
+
+…and that should do it.
+
+There are other things you can do to make it more “request quote tool” like than a shopping cart (such as chaging heading text and button text to reflect that). But at least these changes get you started with the conversion.
+====================================================================================
+            http://wordpress.stackexchange.com/questions/67247/how-to-display-product-specific-to-a-category-with-woocommerce-plugin
+            How to Display Product specific to a category with WooCommerce
+<ul class="products">
+    <?php
+        $args = array( 'post_type' => 'product', 'posts_per_page' => 1, 'product_cat' => 'shoes', 'orderby' => 'rand' );
+        $loop = new WP_Query( $args );
+        while ( $loop->have_posts() ) : $loop->the_post(); global $product; ?>
+
+            <h2>Shoes</h2>
+
+                <li class="product">    
+
+                    <a href="<?php echo get_permalink( $loop->post->ID ) ?>" title="<?php echo esc_attr($loop->post->post_title ? $loop->post->post_title : $loop->post->ID); ?>">
+
+                        <?php woocommerce_show_product_sale_flash( $post, $product ); ?>
+
+                        <?php if (has_post_thumbnail( $loop->post->ID )) echo get_the_post_thumbnail($loop->post->ID, 'shop_catalog'); else echo '<img src="'.woocommerce_placeholder_img_src().'" alt="Placeholder" width="300px" height="300px" />'; ?>
+
+                        <h3><?php the_title(); ?></h3>
+
+                        <span class="price"><?php echo $product->get_price_html(); ?></span>                    
+
+                    </a>
+
+                    <?php woocommerce_template_loop_add_to_cart( $loop->post, $product ); ?>
+
+                </li>
+
+    <?php endwhile; ?>
+    <?php wp_reset_query(); ?>
+</ul><!--/.products-->
+====================================================================================
+ <?php --- php dichi just code heighlight korar jonno -----
+http://www.haloseeker.com/how-to-change-woocommerce-shop-page-title/
+How to Change WooCommerce Shop Page Title
+
+Option 1 : Change Shop Page Title
+
+In order to change the title from “Shop” to any title, you can put below code to your  end of your theme functions.php file (in your theme folder):
+
+add_filter( 'woocommerce_page_title', 'custom_woocommerce_page_title');
+function custom_woocommerce_page_title( $page_title ) {
+  if( $page_title == 'Shop' ) {
+    return "WooCommerce Demo Products";
+  }
+}
+
+Option 2 : Hide or remove Shop Page Title
+
+If you want to hide the “Shop” page title, you can put below code to your theme functions.php (in your theme folder):
+
+add_filter('woocommerce_show_page_title',false);
+
+
+
+====================================================================================
+    Move The WooCommerce Price On The Single Product Page
+    
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 25 ); 
+====================================================================================
+    http://www.haloseeker.com/display-woocommerce-latest-products-without-a-shortcode/
+    Display WooCommerce Latest Products Without a Shortcode
+    
+    <section id="recent">
+    <h1>Recently Added</h1>
+    <ul class="row-fluid">
+        <?php
+            $args = array( 'post_type' => 'product', 'stock' => 1, 'posts_per_page' => 4, 'orderby' =>'date','order' => 'DESC' );
+            $loop = new WP_Query( $args );
+            while ( $loop->have_posts() ) : $loop->the_post(); global $product; ?>
+                    <li class="span3">    
+                        <a id="id-<?php the_id(); ?>" href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
+                            <?php if (has_post_thumbnail( $loop->post->ID )) echo get_the_post_thumbnail($loop->post->ID, 'shop_catalog'); else echo '<img src="'.woocommerce_placeholder_img_src().'" alt="Placeholder" width="65px" height="115px" />'; ?>
+                            <h3><?php the_title(); ?></h3>
+                               <span class="price"><?php echo $product->get_price_html(); ?></span>
+                        </a>
+                        <?php woocommerce_template_loop_add_to_cart( $loop->post, $product ); ?>
+                    </li><!-- /span3 -->
+        <?php endwhile; ?>
+        <?php wp_reset_query(); ?>
+    </ul><!-- /row-fluid -->
+</section><!-- /recent -->
+
+ ===================================================================================
+ <?php --- php dichi just code heighlight korar jonno -----
+                
+   http://docs.woothemes.com/document/woocommerce-display-category-image-on-category-archive/      
+  WooCommerce – display category image on category archive
+  
+
+
+function woocommerce_category_image() {
+if ( is_product_category() ){
+    // verify that this is a product category page
+global $wp_query;
+  // get the query object
+$cat = $wp_query->get_queried_object();
+    // get the thumbnail id user the term_id
+$thumbnail_id = get_woocommerce_term_meta( $cat->term_id, 'thumbnail_id', true );
+    // get the image URL
+$image = wp_get_attachment_url( $thumbnail_id );
+if ( $image ) {
+    // print the IMG HTML
+echo '<img src="' . $image . '" alt="" width="650" height="350" />';
+}
+}
+}     
+add_action( 'woocommerce_archive_description', 'woocommerce_category_image', 2 );
+
+====================================================================================
+                                Remove Image 
+    
+//Remove Image from archive or shop page. Add this code on functions.php
+remove_action(  'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10  );
+
+
+// Remove Image from single product page.  Add this code on functions.php
+remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+.woocommerce-page #content div.product div.summary { width:100%; }
+    or
+ .single-product .product .summary { width: 100% !important; }
+
+// Remove product thumbnail from the cart page
+add_filter( 'woocommerce_cart_item_thumbnail', '__return_empty_string' );
+
+.woocommerce table.cart .product-thumbnail { display:none; }
+
+// Remove sale badges from the shop loop or archive page
+remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+
+// Remove "Sale" icon from product single page
+remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10 );
+
+/** Remove Showing results functionality site-wide */
+function woocommerce_result_count() {
+        return;
+}
+// How to Use a Custom Sales Badge Icon in WooCommerce
+add_filter( 'woocommerce_sale_flash', 'my_custom_sales_badge' );
+function my_custom_sales_badge() {
+	$img = '<span class="onsale"><img src="http://yourwebsite.com/wp-content/uploads/2014/11/custom-sales-badge.png" /></span>';
+	return $img;
+}
+span.onsale {
+	background: none;
+	box-shadow: none;
+}
+
+====================================================================================
+   http://www.ultimatewoo.com/how-to-remove-product-categories-from-woocommerce-shop-page/
+    How to Remove Product Categories from WooCommerce Shop Page
+/**
+ * Remove specific category ID's from the WooCommerce shop page
+ */
+add_action( 'pre_get_posts', 'uw_remove_product_cats_shop_page' );
+function uw_remove_product_cats_shop_page( $query ) {
+	
+	if ( is_shop() && $query->is_main_query() ) {
+ 
+		$query->set( 'tax_query', array(
+			array(
+				'taxonomy' => 'product_cat',
+				'field' => 'ID',
+				'terms' => array( 200, 205, 210 ),
+				'operator' => 'NOT IN'
+			)
+		) );
+	
+	}
+ 
+}
+====================================================================================
+    Add Short Descripton to Products in Shop Page (Woocommerce) functions.php
+    https://support.truethemes.net/?knowledgebase=add-short-descripton-to-products-in-shop-page
+    
+    add_action( 'woocommerce_after_shop_loop_item_title', 'lk_woocommerce_product_excerpt', 35, 2); 
+if (!function_exists('lk_woocommerce_product_excerpt'))  
+{ 
+     function lk_woocommerce_product_excerpt()  
+     { 
+     echo '<span class="excerpt">'; 
+     the_excerpt(); 
+     echo '</span>'; 
+     } 
+}
+
+========OR======
+    For the limited word
+    
+    add_action( 'woocommerce_after_shop_loop_item_title', 'lk_woocommerce_product_excerpt', 35, 2);
+if (!function_exists('lk_woocommerce_product_excerpt'))
+{
+function lk_woocommerce_product_excerpt()
+{
+$content_length = 5;
+global $post;
+$content = $post->post_excerpt;
+$wordarray = explode(' ', $content, $content_length + 1);
+if(count($wordarray) > $content_length) :
+array_pop($wordarray);
+array_push($wordarray, '...');
+$content = implode(' ', $wordarray);
+$content = force_balance_tags($content);
+endif;
+echo "<span class='excerpt'><p>$content</p></span>";
+}
+}
+------------
+    Also you can add css(optional)
+ul.products li {width:22% !important;}
+ul.products span.excerpt p{padding-bottom:14px !important;}
+====================================================================================
+     Change Number of Products Displayed on Page (WooCommerce)
+ By default the Theme will show 12 Products per Page. Bellow are instructions if you wish to change that number.
+    
+    add_filter('loop_shop_per_page', create_function('$cols', 'return 8;'));
+    
+Change 8 with the number of Products you wish to display    
+====================================================================================      
+    Change Number of Products Displayed per Row
+    
+    // Change number of products per row to 3
+add_filter('loop_shop_columns', 'loop_columns');
+if (!function_exists('loop_columns')) {
+function loop_columns() {
+return 3; // 3 products per row
+}
+}
+====================================================================================
+    
+    WooCommerce: change the number of related products displayed in your shop
+// Redefine woocommerce_output_related_products()
+    function woocommerce_output_related_products() {
+    woocommerce_related_products(4,2); // Display 4 products in rows of 2
+    }
+
+Please Note:
+– 4 is for the number of products in each row.
+– 2 is for the number of rows.
+====================================================================================
+    Make WooCommerce Cart fully Responsive
+    https://support.truethemes.net/?knowledgebase=make-woocommerce-cart-fully-responsive
+====================================================================================
+    http://kb.oboxthemes.com/articles/how-to-i-change-the-shop-title-to-something-else/
+    How to I change the “Shop” title to something else
+    
+    add_filter( 'woocommerce_page_title', 'woo_shop_page_title');
+           function woo_shop_page_title( $page_title ) {
+                      if( 'Shop' == $page_title) {
+                                   return "My new title";                         }
+            }
+    
+====================================================================================
+    
+    How do I rename the Product Description or Reviews tabs?
+    
+    add_filter( 'woocommerce_product_tabs', 'woo_rename_tab', 98);
+function woo_rename_tab($tabs) {
+$tabs['description']['title'] = 'More info';
+    return $tabs;
+}
+====================================================================================
+ http://wordpress.stackexchange.com/questions/67247/how-to-display-product-specific-to-a-category-with-woocommerce-plugin
+   //How to Display Product specific to a category with WooCommerce
+
+    <ul class="products">
+    <?php
+        $args = array( 'post_type' => 'product', 'posts_per_page' => 1, 'product_cat' => 'shoes', 'orderby' => 'rand' );
+        $loop = new WP_Query( $args );
+        while ( $loop->have_posts() ) : $loop->the_post(); global $product; ?>
+
+            <h2>Shoes</h2>
+
+                <li class="product">    
+
+                    <a href="<?php echo get_permalink( $loop->post->ID ) ?>" title="<?php echo esc_attr($loop->post->post_title ? $loop->post->post_title : $loop->post->ID); ?>">
+
+                        <?php woocommerce_show_product_sale_flash( $post, $product ); ?>
+
+                        <?php if (has_post_thumbnail( $loop->post->ID )) echo get_the_post_thumbnail($loop->post->ID, 'shop_catalog'); else echo '<img src="'.woocommerce_placeholder_img_src().'" alt="Placeholder" width="300px" height="300px" />'; ?>
+
+                        <h3><?php the_title(); ?></h3>
+
+                        <span class="price"><?php echo $product->get_price_html(); ?></span>                    
+
+                    </a>
+
+                    <?php woocommerce_template_loop_add_to_cart( $loop->post, $product ); ?>
+
+                </li>
+
+    <?php endwhile; ?>
+    <?php wp_reset_query(); ?>
+</ul><!--/.products-->
+====================================================================================
+Display All Products by Category with WooCommerce
+http://wordpress.stackexchange.com/questions/139196/display-all-products-by-category-with-woocommerce?rq=1
+
+<?php
+$args = array(
+    'number'     => $number,
+    'orderby'    => 'title',
+    'order'      => 'ASC',
+    'hide_empty' => $hide_empty,
+    'include'    => $ids
+);
+$product_categories = get_terms( 'product_cat', $args );
+$count = count($product_categories);
+if ( $count > 0 ){
+    foreach ( $product_categories as $product_category ) {
+        echo '<h4><a href="' . get_term_link( $product_category ) . '">' . $product_category->name . '</a></h4>';
+        $args = array(
+            'posts_per_page' => -1,
+            'tax_query' => array(
+                'relation' => 'AND',
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field' => 'slug',
+                    // 'terms' => 'white-wines'
+                    'terms' => $product_category->slug
+                )
+            ),
+            'post_type' => 'product',
+            'orderby' => 'title,'
+        );
+        $products = new WP_Query( $args );
+        echo "<ul>";
+        while ( $products->have_posts() ) {
+            $products->the_post();
+            ?>
+                <li>
+                    <a href="<?php the_permalink(); ?>">
+                        <?php the_title(); ?>
+                    </a>
+                </li>
+            <?php
+        }
+        echo "</ul>";
+    }
+}
+
+?>
+====================================================================================
+<?php
+Move The WooCommerce Price On The Single Product Page
+http://www.alphablossom.com/move-woocommerce-price-on-single-product-page/
+// Move WooCommerce price
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 25 );
+====================================================================================
