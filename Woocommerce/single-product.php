@@ -119,6 +119,20 @@ button.single_add_to_cart_button.button.alt.wp-element-button {
 }
 
 // ========================================
+// Product stock status 
+// ========================================
+
+					if ($product->is_in_stock()) {
+						$stock_status =  $product->get_stock_quantity() . __(' in stock', 'envy');
+					} else {
+						$stock_status =  __('out of stock', 'envy');
+					}
+
+// ========================================
+// 
+// ========================================
+
+
 
 
 
