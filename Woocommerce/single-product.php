@@ -130,7 +130,7 @@ button.single_add_to_cart_button.button.alt.wp-element-button {
 
 
 // =================================
-// remove sidebar from product pages
+// remove something from single product pages
 // =================================
 
 add_action('wp', 'bbloomer_remove_sidebar_product_pages');
@@ -138,7 +138,8 @@ add_action('wp', 'bbloomer_remove_sidebar_product_pages');
 function bbloomer_remove_sidebar_product_pages()
 {
     if (is_product()) {
-        remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
+        remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);  //removes sidebar
+	remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0);  //removes breadcumb
     }
 }
 
