@@ -128,6 +128,20 @@ button.single_add_to_cart_button.button.alt.wp-element-button {
 						$stock_status =  __('out of stock', 'envy');
 					}
 
+
+// =================================
+// remove sidebar from product pages
+// =================================
+
+add_action('wp', 'bbloomer_remove_sidebar_product_pages');
+
+function bbloomer_remove_sidebar_product_pages()
+{
+    if (is_product()) {
+        remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
+    }
+}
+
 // ========================================
 // 
 // ========================================
