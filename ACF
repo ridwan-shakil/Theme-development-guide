@@ -24,7 +24,7 @@ Don't use Repeater instide of Group . ***
 <?php endif; ?>
 
 
-add_filter( 'acf/settings/show_admin' , '__return_false' ) ;   // Hide ACF from admin panel for users
+
 
 
 // Get category from ACF texonomy field
@@ -32,7 +32,15 @@ add_filter( 'acf/settings/show_admin' , '__return_false' ) ;   // Hide ACF from 
     $catid = get_field('blogcat', 'options'));
    $catname = get_cat_name($catid); ***
    
-   
+----------------------------------------
+// Hide ACF from admin panel for users
+-----------------------------------------
+add_filter( 'acf/settings/show_admin' , '__return_false' ) ;   
+creat fields > get the code from acf > store the code by demo data > require the file > 
+acf > tools > generate php > copy code > inc/metabox.php (pest inside 'init' hook) > require in function.php>
+
+//now user will not see acf page but see the fields that you have made by acf
+
 ===============================================
 Rpeter inside Repeter 
 ===============================================
