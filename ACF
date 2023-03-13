@@ -24,6 +24,9 @@ Don't use Repeater instide of Group . ***
 <?php endif; ?>
 
 
+add_filter( 'acf/settings/show_admin' , '__return_false' ) ;   // Hide ACF from admin panel for users
+
+
 // Get category from ACF texonomy field
 
     $catid = get_field('blogcat', 'options'));
