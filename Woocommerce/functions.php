@@ -1,6 +1,6 @@
 <?php
-//At first we have to give woocommerce support to our theme 
-   add_theme_support('woocommerce');
+// ( cart, checkout, account ) pages use your themes page.php file 
+// ( Shop , single product , taxonomy pages = categories, tags )  pages use WordPress own templates 
 
 
 // ==========================
