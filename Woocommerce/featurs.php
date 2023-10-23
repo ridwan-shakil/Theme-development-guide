@@ -1,4 +1,12 @@
 <?php
+
+// show any products 
+there are many shortcodes available in woocommerce documentation: https://woocommerce.com/document/woocommerce-shortcodes/
+
+	example:  ( add any query inside the shortcode to get your desired products, queries are available above link )	
+          echo do_shortcode( '[products on_sale="true" ]' );
+
+
 // =================================
 Gets all product terms ( category )
 // =================================
