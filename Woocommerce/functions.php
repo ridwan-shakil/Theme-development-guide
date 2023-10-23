@@ -59,7 +59,7 @@ add_action('after_setup_theme', 'organi_setup_theme');
 
 
 // ==========================
-// Shop/archive page
+// Shop page
 // ==========================
 /**
  * Change the number of products per row to 3
@@ -70,6 +70,14 @@ if (!function_exists('loop_columns')) {
 	}
 }
 add_filter('loop_shop_columns', 'loop_columns', 999);
+
+//Remove any post from the shop page 
+function organi_remove_some_product($wq) {
+    $wq->set('post__not_in', array(35));
+    return $wq;
+}
+add_filter( 'woocommerce_product_query','organi_remove_some_product' );
+
 
 // ==========================
 // product
