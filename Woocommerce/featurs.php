@@ -6,6 +6,7 @@ there are many shortcodes available in woocommerce documentation: https://woocom
 
 	example:  ( add any query inside the shortcode to get your desired products, queries are available above link )	
           echo do_shortcode( '[products on_sale="true" ]' );
+          echo do_shortcode( '[products limit="4" columns="4" orderby="popularity" class="quick-sale" on_sale="true" ]' );
 
 
 // =================================
