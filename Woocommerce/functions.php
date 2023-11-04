@@ -32,6 +32,19 @@ add_action('after_setup_theme', 'organi_setup_theme');
 
 
 
+/**
+ * Change my account menu item for logged-out users
+ */
+function bbloomer_dynamic_menu_item_label($items, $args) {
+    if (!is_user_logged_in()) {
+        $items = str_replace("My account", "Login", $items);
+    }
+
+    return $items;
+}
+add_filter('wp_nav_menu_items', 'bbloomer_dynamic_menu_item_label', 9999, 2);
+
+
 
 
 
