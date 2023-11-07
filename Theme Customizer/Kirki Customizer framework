@@ -2,7 +2,13 @@
 Kirki Notes
 ===================================
 
-1.	Doesn't support icon inside repeter
-2.	video showing problem
-3.	din't know how to export contact form 7 form
+1.	Doesn't support icon inside a repeater
+2.	video showing the problem
+3.	didn't know how to export contact form 7 form
 
+
+start with kirki : https://docs.themeum.com/kirki/getting-started/panels-sections/
+
+Require via "TGM" in your theme 
+
+add panel, section & Controls 
